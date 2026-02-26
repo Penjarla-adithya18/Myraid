@@ -1,9 +1,10 @@
-import { TaskStatus } from "@prisma/client";
 import { handleRouteError, ok } from "@/lib/api";
 import { getAuthenticatedUser } from "@/lib/auth";
 import { decryptText, encryptText } from "@/lib/crypto";
 import { prisma } from "@/lib/prisma";
 import { taskCreateSchema, taskListQuerySchema } from "@/lib/schemas";
+
+type TaskStatusValue = "TODO" | "IN_PROGRESS" | "DONE";
 
 export async function POST(request: Request) {
   try {
@@ -47,7 +48,7 @@ export async function GET(request: Request) {
 
     const where: {
       ownerId: string;
-      status?: TaskStatus;
+      status?: TaskStatusValue;
       title?: { contains: string; mode: "insensitive" };
     } = {
       ownerId: user.userId,
