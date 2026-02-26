@@ -79,7 +79,7 @@ export async function GET(request: Request) {
     ]);
 
     return ok({
-      tasks: items.map((task) => ({
+      tasks: items.map((task: { description: string } & Record<string, unknown>) => ({
         ...task,
         description: decryptText(task.description),
       })),
